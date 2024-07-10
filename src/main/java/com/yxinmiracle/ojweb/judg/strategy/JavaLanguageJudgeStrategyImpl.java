@@ -14,6 +14,7 @@ import com.yxinmiracle.ojweb.model.entity.Question;
 import com.yxinmiracle.ojweb.model.enums.JudgeInfoMessageEnum;
 
 import java.util.List;
+import java.util.Optional;
 
 public class JavaLanguageJudgeStrategyImpl implements JudgeStrategy {
     @Override
@@ -23,9 +24,9 @@ public class JavaLanguageJudgeStrategyImpl implements JudgeStrategy {
         List<String> outputList = judgeContext.getOutputList();
         Question question = judgeContext.getQuestion();
         List<JudgeCase> judgeCaseList = judgeContext.getJudgeCaseList();
-
-        Long memory = judgeInfo.getMemory();
-        Long time = judgeInfo.getTime();
+        // todo
+        Long memory = Optional.ofNullable(judgeInfo.getMemory()).orElse(0L);
+        Long time =Optional.ofNullable(judgeInfo.getTime()).orElse(0L);
         JudgeInfo judgeInfoResponse = new JudgeInfo();
         judgeInfoResponse.setMemory(memory);
         judgeInfoResponse.setTime(time);
@@ -43,7 +44,6 @@ public class JavaLanguageJudgeStrategyImpl implements JudgeStrategy {
             if (!judgeCase.getOutput().equals(outputList.get(i))) {
                 judgeInfoMessageEnum = JudgeInfoMessageEnum.WRONG_ANSWER;
                 judgeInfoResponse.setMessage(judgeInfoMessageEnum.getValue());
-
                 return judgeInfoResponse;
             }
         }
