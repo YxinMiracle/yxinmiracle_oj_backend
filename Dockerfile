@@ -1,14 +1,9 @@
-# Docker 镜像构建
+FROM openjdk:8-jdk-alpine
 
-FROM maven:3.8.1-jdk-8-slim as builder
-
-# Copy local code to the container image.
 WORKDIR /app
-COPY pom.xml .
-COPY src ./src
 
-# Build a release artifact.
-RUN mvn package -DskipTests
+ADD yxinmiracle_oj_backend-0.0.1-SNAPSHOT.jar .
 
-# Run the web service on container startup.
-CMD ["java","-jar","/app/target/yxinmiracle_oj_backend-0.0.1-SNAPSHOT.jar","--spring.profiles.active=prod"]
+EXPOSE 8360
+
+ENTRYPOINT ["java", "-Xmx512m","-jar","/app/yxinmiracle_oj_backend-0.0.1-SNAPSHOT.jar","--spring.profiles.active=prod"]

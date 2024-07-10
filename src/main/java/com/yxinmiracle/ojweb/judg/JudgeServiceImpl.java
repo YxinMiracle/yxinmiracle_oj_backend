@@ -39,7 +39,7 @@ public class JudgeServiceImpl implements JudgeService {
     @Resource
     private QuestionSubmitService questionSubmitService;
 
-    @Value("${codesandBox.type}")
+    @Value("${codeSandbox.type}")
     private String type;
 
     @Resource

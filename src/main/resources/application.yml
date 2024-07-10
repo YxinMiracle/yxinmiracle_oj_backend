@@ -71,3 +71,5 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - com.yxinmiracle.ojweb.controller
+codeSandbox:
+  type: remote

@@ -143,16 +143,16 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
     public Page<QuestionSubmitVO> getQuestionSubmitVOPage(Page<QuestionSubmit> questionSubmitPage, User loginUser) {
         List<QuestionSubmit> questionSubmitList = questionSubmitPage.getRecords();
         Page<QuestionSubmitVO> questionSubmitVOPage = new Page<>(questionSubmitPage.getCurrent(), questionSubmitPage.getSize(), questionSubmitPage.getTotal());
-
+        if (CollectionUtils.isEmpty(questionSubmitList)) {
+            return questionSubmitVOPage;
+        }
         List<Long> questionIds = questionSubmitList.stream().map(QuestionSubmit::getQuestionId).collect(Collectors.toList());
         List<Long> userIds = questionSubmitList.stream().map(QuestionSubmit::getUserId).collect(Collectors.toList());
 
         Map<Long, List<Question>> questionIdMap = questionService.listByIds(questionIds).stream().collect(Collectors.groupingBy(Question::getId));
         Map<Long, List<User>> userIdMap = userService.listByIds(userIds).stream().collect(Collectors.groupingBy(User::getId));
 
-        if (CollectionUtils.isEmpty(questionSubmitList)) {
-            return questionSubmitVOPage;
-        }
+
         List<QuestionSubmitVO> questionSubmitVOList = questionSubmitList.stream()
                 .map(questionSubmit -> {
                     QuestionSubmitVO questionSubmitVO = getQuestionSubmitVO(questionSubmit, loginUser);
